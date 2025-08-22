@@ -1,9 +1,9 @@
 #include "Logger/Logger.hpp"
 
-ora::LogState ora::Logger::s_state = 0b11111111;
-std::string ora::Logger::s_log_file_path = "UNKNOWN.log";
+AMB::LogState AMB::Logger::s_state = 0b11111111;
+std::string AMB::Logger::s_log_file_path = "UNKNOWN.log";
 
-namespace ora {
+namespace AMB {
 
 void _log_callback(LogLevel level, const std::string& message, bool cmd, bool txt, std::ofstream& stream) {
     // Create log string and take the time of the log
@@ -67,11 +67,11 @@ Logger::Logger(const std::string& log_file_path, LogState state)
         log(Error, "Logger can not open log file. Log file path : " + log_file_path);
     }
 
-    log(ora::Info, "Logger created");
+    log(AMB::Info, "Logger created");
 }
 
 Logger::~Logger() {
-    log(ora::Info, "Logger destroyed");
+    log(AMB::Info, "Logger destroyed");
 
     if (m_log_file && m_log_file->is_open()) {
         m_log_file->close();

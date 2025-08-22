@@ -1,6 +1,6 @@
 #include "Window/Window.hpp"
 
-namespace ora {
+namespace AMB {
 
 Window::Window(uint32_t width, uint32_t height, std::string title, uint32_t sdl_flags, uint32_t win_flags) 
 : m_width(width), m_height(height), m_title(title), m_window(nullptr)

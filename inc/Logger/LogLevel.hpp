@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ora {
+namespace AMB {
 
 /// @brief Level of log and display modes
 enum LogLevel {

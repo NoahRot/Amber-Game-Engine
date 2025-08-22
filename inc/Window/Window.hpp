@@ -8,7 +8,7 @@
 
 #include "Logger/Logger.hpp"
 
-namespace ora {
+namespace AMB {
 
 /// @brief Window class
 class Window {

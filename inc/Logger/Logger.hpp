@@ -11,7 +11,7 @@
 
 #include "Logger/LogLevel.hpp"
 
-namespace ora {
+namespace AMB {
 
 /// @brief State of the log class
 typedef uint8_t LogState;

@@ -77,3 +77,7 @@ clean:
 	-$(RM) $(call fixpath,$(DIR_LIB)/$(ENGINE_NAME).lib) > $(NULLDEV) 2>&1
 	-$(RM) $(call fixpath,$(OBJ)) > $(NULLDEV) 2>&1
 	-$(RM) $(call fixpath,$(DIR_BIN)/*.exe) > $(NULLDEV) 2>&1
+
+# Clean test files
+clean_tests:
+	-$(RM) $(call fixpath,$(DIR_BIN)/*.exe) > $(NULLDEV) 2>&1

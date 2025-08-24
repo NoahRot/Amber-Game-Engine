@@ -49,3 +49,4 @@ build/bin/sdl2-config
 *.pc
 *.log
 .vscode/
+*.amber

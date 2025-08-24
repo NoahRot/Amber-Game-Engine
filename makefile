@@ -10,8 +10,6 @@ ENGINE_NAME = Ember
 
 # Remove function
 RM     = del /Q
-NULLDEV = NUL
-fixpath = $(subst /,\,$1)
 
 # Directories
 DIR_SRC = src
@@ -29,6 +27,9 @@ INCLUDES = -I $(DIR_INC) -I $(DIR_EXT)
 # Gald
 GLAD_SRC = $(DIR_SRC)/glad/glad.c
 
+# Subdirectories for all the modules
+SUBDIRECTORIES = $(wildcard $(DIR_SRC)/*/)
+
 # Files
 SRC = $(wildcard $(DIR_SRC)/**/*.cpp) $(wildcard $(DIR_SRC)/*.cpp)
 OBJ := $(patsubst $(DIR_SRC)/%.cpp, $(DIR_OBJ)/%.o, $(SRC))
@@ -43,6 +44,14 @@ define \n
 endef
 
 all: $(DIR_LIB)/$(ENGINE_NAME).lib $(DIR_BIN)/$(ENGINE_NAME).dll
+
+# Setup project, create folders if they do not exist
+setup:
+	@if not exist $(DIR_BUILD) (mkdir $(subst /,\,$(DIR_BUILD)))
+	@if not exist $(DIR_BIN) (mkdir $(subst /,\,$(DIR_BIN)))
+	@if not exist $(DIR_LIB) (mkdir $(subst /,\,$(DIR_LIB)))
+	@if not exist $(DIR_OBJ) (mkdir $(subst /,\,$(DIR_OBJ)))
+	$(foreach D, $(patsubst $(DIR_SRC)/%, $(DIR_OBJ)/%,$(SUBDIRECTORIES)), @if not exist $(D) (mkdir $(subst /,\,$(D)))$(\n) ) 
 
 # Shared library
 $(DIR_BIN)/$(ENGINE_NAME).dll: $(OBJ)
@@ -63,21 +72,28 @@ $(DIR_BIN)/%.$(EXTENSION_EXE): $(DIR_TEST)/%.cpp
 	$(CC) $(CFLAGS) $< -o $@ $(GLAD_SRC) $(INCLUDES) $(LIBRARY)
 
 # Compile all tests
-test: $(TEST_EXE)
+tests: $(TEST_EXE)
 
 # Help command
 help:
-	@echo Run "mingw32-make" to compile static and dynamic libraries.
-	@echo Run "mingw32-make build/bin/test.exe" (replace test by the actual test file name) to compile a test file. List of the tests:
-	$(foreach T,$(TEST_EXE), @echo    - mingw32-make $(T)${\n})
+	@echo Makefile commands:
+	@echo -------------------
+	@echo  setup        		: Create the build folders if they do not exist.
+	@echo  all          		: Compile object files, static and dynamic libraries.
+	@echo  clean        		: Remove all compiled files (libraries, object files, executables).
+	@echo  clean_tests  		: Remove all compiled test executables.
+	@echo  help         		: Display this help message.
+	@echo  tests         		: Compile all the test files in the test folder.
+	@echo  build/bin/test.exe 	: Replace test by the actual test file name to compile a test file. List of the tests:
+	$(foreach T,$(TEST_EXE), @echo    + $(T)${\n})
 
 # Clean project
 clean:
-	-$(RM) $(call fixpath,$(DIR_BIN)/$(ENGINE_NAME).dll) > $(NULLDEV) 2>&1
-	-$(RM) $(call fixpath,$(DIR_LIB)/$(ENGINE_NAME).lib) > $(NULLDEV) 2>&1
-	-$(RM) $(call fixpath,$(OBJ)) > $(NULLDEV) 2>&1
-	-$(RM) $(call fixpath,$(DIR_BIN)/*.exe) > $(NULLDEV) 2>&1
+	-$(RM) $(subst /,\,$(DIR_BIN)/$(ENGINE_NAME).dll)
+	-$(RM) $(subst /,\,$(DIR_LIB)/$(ENGINE_NAME).lib)
+	-$(RM) $(subst /,\,$(OBJ))
+	-$(RM) $(subst /,\,$(DIR_BIN)/*.exe)
 
 # Clean test files
 clean_tests:
-	-$(RM) $(call fixpath,$(DIR_BIN)/*.exe) > $(NULLDEV) 2>&1
+	-$(RM) $(subst /,\,$(DIR_BIN)/*.exe)

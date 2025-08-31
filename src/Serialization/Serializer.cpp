@@ -2,7 +2,7 @@
 
 namespace AMB {
 
-bool Serializer::serialize_bin(const Group& group, std::string path) {
+bool Serializer::serialize_bin(const Hierarchy& hierarchy, std::string path) {
     std::ofstream file(path + EXTENSION_BIN, std::ios::binary);
     if (!file.is_open()) {
         Logger::instance().log(Error, "Failed to open file for binary serialization: " + path);
@@ -12,7 +12,12 @@ bool Serializer::serialize_bin(const Group& group, std::string path) {
     // Write header
     file.write(BINARY_FILE_HEADER, sizeof(BINARY_FILE_HEADER));
 
-    write_bin(group, file);
+    // Write the name of the hierarchy
+    uint8_t name_length = hierarchy.name.size();
+    file.write(reinterpret_cast<const char*>(&name_length), sizeof(name_length));
+    file.write(hierarchy.name.c_str(), name_length);
+
+    write_bin(hierarchy.root, file);
     return true;
 }
 
@@ -20,7 +25,7 @@ void Serializer::write_bin(const Group& group, std::ofstream& file) {
 
     // Get number of data and subgroups
     uint16_t num_data = group.data.size();
-    uint16_t num_subgroups = group.subgroups.size();
+    uint16_t num_subgroups = group.subgroups.size(); 
     
     // Write data
     file.write(reinterpret_cast<const char*>(&num_data), sizeof(num_data));
@@ -50,7 +55,7 @@ void Serializer::write_bin(const Group& group, std::ofstream& file) {
     }
 }
 
-bool Serializer::deserialize_bin(Group& group, std::string path) {
+bool Serializer::deserialize_bin(Hierarchy& hierarchy, std::string path) {
     std::ifstream file(path + EXTENSION_BIN, std::ios::binary);
     if (!file.is_open()) {
         Logger::instance().log(Error, "Failed to open file for binary deserialization: " + path);
@@ -66,7 +71,13 @@ bool Serializer::deserialize_bin(Group& group, std::string path) {
         return false;
     }
 
-    read_bin(group, file);
+    // Read the name of the hierarchy
+    uint8_t name_length;
+    file.read(reinterpret_cast<char*>(&name_length), sizeof(name_length));
+    hierarchy.name.resize(name_length);
+    file.read(&hierarchy.name[0], name_length);
+
+    read_bin(hierarchy.root, file);
     return true;
 }
 

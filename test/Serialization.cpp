@@ -8,14 +8,14 @@ int main(int argc, char* argv[]) {
     std::vector<float> vec_ = {4.0f, 5.0f, 6.0f};
     std::string str = "Hello, World!";
 
-    AMB::Group root;
+    AMB::Hierarchy root;
 
     AMB::add_data(root["number"]["int_value"], "my_int", a);
     AMB::add_data(root["number"]["float_list"], "my_floats", vec);
     AMB::add_data(root["number"]["float_list"], "my_floats_r", vec_);
     AMB::add_data(root["text"]["greeting"], "my_string", str);
 
-    print_group(root);
+    AMB::print_hierarchy(root);
 
     int a2=0;
     std::vector<float> vec2(3);
@@ -41,9 +41,9 @@ int main(int argc, char* argv[]) {
     AMB::Serializer serializer;
     serializer.serialize_bin(root, "test");
 
-    AMB::Group loaded;
+    AMB::Hierarchy loaded;
     serializer.deserialize_bin(loaded, "test"); 
-    print_group(loaded);
+    AMB::print_hierarchy(loaded);
 
     AMB::get_data(loaded["number"]["int_value"], "my_int", a2);
     AMB::get_data(loaded["number"]["float_list"], "my_floats", vec2);

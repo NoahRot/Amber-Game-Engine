@@ -224,8 +224,8 @@ std::string data_to_string(const Data& data) {
             std::vector<Byte> values(count);
             std::memcpy(values.data(), data.data.data(), data.data.size());
             std::string result = "";
-            for (const auto& v : values) {
-                result += std::to_string(v) + " ";
+            for (const unsigned char& v : values) {
+                result += v;
             }
             return result;
         }

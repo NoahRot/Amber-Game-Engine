@@ -6,10 +6,10 @@ NO_WIN = -mwindows
 EXTENSION_EXE = exe
 
 # Name
-ENGINE_NAME = Ember
+ENGINE_NAME = Amber
 
 # Remove function
-RM     = del /Q
+RM = del /Q
 
 # Directories
 DIR_SRC = src
@@ -21,7 +21,7 @@ DIR_BIN = $(DIR_BUILD)/bin
 DIR_OBJ = $(DIR_BUILD)/obj
 DIR_EXT = $(DIR_INC)/External
 
-LIBRARY = -L $(DIR_LIB) -lEmber -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lfreetype # ATTENTION A L'ORDRE DES INCLUSION DES LIBRAIRIES
+LIBRARY = -L $(DIR_LIB) -l$(ENGINE_NAME) -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lfreetype # ATTENTION A L'ORDRE DES INCLUSION DES LIBRAIRIES
 INCLUDES = -I $(DIR_INC) -I $(DIR_EXT)
 
 # Gald

@@ -18,6 +18,8 @@ bool Serializer::serialize_bin(const Hierarchy& hierarchy, std::string path) {
     file.write(hierarchy.name.c_str(), name_length);
 
     write_bin(hierarchy.root, file);
+
+    file.close();
     return true;
 }
 
@@ -68,6 +70,8 @@ bool Serializer::deserialize_bin(Hierarchy& hierarchy, std::string path) {
     if (header[0] != BINARY_FILE_HEADER[0] || header[1] != BINARY_FILE_HEADER[1] ||
         header[2] != BINARY_FILE_HEADER[2] || header[3] != BINARY_FILE_HEADER[3]) {
         Logger::instance().log(Error, "Invalid file format for binary deserialization: " + path);
+
+        file.close();
         return false;
     }
 
@@ -78,6 +82,8 @@ bool Serializer::deserialize_bin(Hierarchy& hierarchy, std::string path) {
     file.read(&hierarchy.name[0], name_length);
 
     read_bin(hierarchy.root, file);
+
+    file.close();
     return true;
 }
 
@@ -121,5 +127,84 @@ void Serializer::read_bin(Group& group, std::ifstream& file) {
         read_bin(subgroup, file);
     }
 }
+
+bool Serializer::serialize_txt(const Hierarchy& hierarchy, std::string path) {
+    std::ofstream file(path + EXTENSION_TXT);
+    if (!file.is_open()) {
+        Logger::instance().log(Error, "Failed to open file for text serialization: " + path);
+        return false;
+    }
+    file << "Hierarchy: " << hierarchy.name << "\n";
+    
+    write_txt(hierarchy.root, file);
+
+    file.close();
+    return true;
+}
+
+void Serializer::write_txt(const Group& group, std::ofstream& file, int indent) {
+    std::string indent_str(indent, ' ');
+    for (const auto& [data_name, data] : group.data) {
+        file << indent_str << "Data:" << data_name << " Type:" << static_cast<int>(data.type) << " Size:" << data.data.size() << " ";
+        file << data_to_string(data) << "\n";
+    }
+    for (const auto& [subgroup_name, subgroup] : group.subgroups) {
+        file << indent_str << "Group:" << subgroup_name << "\n"; 
+        write_txt(subgroup, file, indent + 2);
+    }
+}
+
+bool Serializer::deserialize_txt(Hierarchy& hierarchy, std::string path) {
+    std::ifstream file(path + EXTENSION_TXT);
+    if (!file.is_open()) {
+        Logger::instance().log(Error, "Failed to open file for text deserialization: " + path);
+        return false;
+    }
+
+    // Read the name of the hierarchy
+    std::string line;
+    if (std::getline(file, line)) {
+        if (line.rfind("Hierarchy:", 0) == 0) {
+            hierarchy.name = line.substr(10);
+        } else {
+            Logger::instance().log(Error, "Invalid file format for text deserialization: " + path);
+            file.close();
+            return false;
+        }
+    } else {
+        Logger::instance().log(Error, "Empty file for text deserialization: " + path);
+        file.close();
+        return false;
+    }
+
+    read_txt(hierarchy.root, file);
+
+    file.close();
+    return true;
+}
+
+/*void Serializer::read_txt(Group& group, std::ifstream& file, int level) {
+    std::string line;
+    while (std::getline(file, line)) {
+        // Find the current line's indentation level
+        int current_indent = 0;
+        while (current_indent < line.size() && line[current_indent] == ' ') {
+            ++current_indent;
+        }
+        int current_level = current_indent / 2;
+
+        if (current_level < level) {
+            // We've gone back to a higher level, so return to the previous call
+            file.seekg(-static_cast<int>(line.size()) - 1, std::ios::cur); // Move back one line
+            return;
+        } else if (current_level > level) {
+            Logger::instance().log(Error, "Invalid indentation in text deserialization");
+            return;
+        }
+
+        print(line); // For debugging
+        
+    }
+}*/
 
 }

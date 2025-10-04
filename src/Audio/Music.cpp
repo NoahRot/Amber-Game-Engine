@@ -4,16 +4,9 @@ namespace AMB {
 
 float Music::s_volume = 1.0f;
 
-Music::Music(const std::string& path) {
-    // Load the music
-    m_music = Mix_LoadMUS(path.c_str());
-
-    // Check if the music has been loaded successfully
-    if (!m_music) {
-        Logger::instance().log(Error, "Can not load music. Music path : " + path + ". Mix Error : " + std::string(Mix_GetError()));
-        exit(EXIT_FAILURE);
-    }    
-}
+Music::Music(Mix_Music* music)
+: m_music(music)
+{}
 
 Music::~Music() {
     Mix_FreeMusic(m_music);

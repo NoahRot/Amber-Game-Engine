@@ -73,78 +73,97 @@ void get_data_info(const T& value, DataType& type, Byte*& begin, uint32_t& size_
         type = DataType::INT8;
         begin = reinterpret_cast<Byte*>(const_cast<int8_t*>(&value));
         size_byte = sizeof(int8_t);
+
     } else if constexpr (std::is_same_v<T, std::vector<int8_t>>) {
         type = DataType::LIST_INT8;
         begin = reinterpret_cast<Byte*>(const_cast<int8_t*>(value.data()));
         size_byte = sizeof(int8_t) * value.size();
+
     } else if constexpr (std::is_same_v<T, int16_t>) {
         type = DataType::INT16;
         begin = reinterpret_cast<Byte*>(const_cast<int16_t*>(&value));
         size_byte = sizeof(int16_t);
+
     } else if constexpr (std::is_same_v<T, std::vector<int16_t>>) {
         type = DataType::LIST_INT16;
         begin = reinterpret_cast<Byte*>(const_cast<int16_t*>(value.data()));
         size_byte = sizeof(int16_t) * value.size();
+
     } else if constexpr (std::is_same_v<T, int>) {
         type = DataType::INT32;
         begin = reinterpret_cast<Byte*>(const_cast<int*>(&value));
         size_byte = sizeof(int);
+
     } else if constexpr (std::is_same_v<T, std::vector<int>>) {
         type = DataType::LIST_INT32;
         begin = reinterpret_cast<Byte*>(const_cast<int*>(value.data()));
         size_byte = sizeof(int) * value.size();
+
     } else if constexpr (std::is_same_v<T, uint8_t>) {
         type = DataType::UINT8;
         begin = reinterpret_cast<Byte*>(const_cast<uint8_t*>(&value));
         size_byte = sizeof(uint8_t);
+
     } else if constexpr (std::is_same_v<T, std::vector<uint8_t>>) {
         type = DataType::LIST_UINT8;
         begin = reinterpret_cast<Byte*>(const_cast<uint8_t*>(value.data()));
         size_byte = sizeof(uint8_t) * value.size();
+
     } else if constexpr (std::is_same_v<T, uint16_t>) {
         type = DataType::UINT16;
         begin = reinterpret_cast<Byte*>(const_cast<uint16_t*>(&value));
         size_byte = sizeof(uint16_t);
+
     } else if constexpr (std::is_same_v<T, std::vector<uint16_t>>) {
         type = DataType::LIST_UINT16;
         begin = reinterpret_cast<Byte*>(const_cast<uint16_t*>(value.data()));
         size_byte = sizeof(uint16_t) * value.size();
+
     } else if constexpr (std::is_same_v<T, uint32_t>) {
         type = DataType::UINT32;
         begin = reinterpret_cast<Byte*>(const_cast<uint32_t*>(&value));
         size_byte = sizeof(uint32_t);
+
     } else if constexpr (std::is_same_v<T, std::vector<uint32_t>>) {
         type = DataType::LIST_UINT32;
         begin = reinterpret_cast<Byte*>(const_cast<uint32_t*>(value.data()));
         size_byte = sizeof(uint32_t) * value.size();
+
     } else if constexpr (std::is_same_v<T, float>) {
         type = DataType::FLOAT;
         begin = reinterpret_cast<Byte*>(const_cast<float*>(&value));
         size_byte = sizeof(float);
+
     } else if constexpr (std::is_same_v<T, std::vector<float>>) {
         type = DataType::LIST_FLOAT;
         begin = reinterpret_cast<Byte*>(const_cast<float*>(value.data()));
         size_byte = sizeof(float) * value.size();
+
     } else if constexpr (std::is_same_v<T, double>) {
         type = DataType::DOUBLE;
         begin = reinterpret_cast<Byte*>(const_cast<double*>(&value));
         size_byte = sizeof(double);
+
     } else if constexpr (std::is_same_v<T, std::vector<double>>) {
         type = DataType::LIST_DOUBLE;
         begin = reinterpret_cast<Byte*>(const_cast<double*>(value.data()));
         size_byte = sizeof(double) * value.size();
+
     } else if constexpr (std::is_same_v<T, Byte>) {
         type = DataType::BYTE;
         begin = const_cast<Byte*>(&value);
         size_byte = sizeof(Byte);
+
     } else if constexpr (std::is_same_v<T, std::vector<Byte>>) {
         type = DataType::LIST_BYTE;
         begin = const_cast<Byte*>(value.data());
         size_byte = sizeof(Byte) * value.size();
+
     } else if constexpr (std::is_same_v<T, std::string>) {
         type = DataType::STRING;
         begin = const_cast<Byte*>(reinterpret_cast<const Byte*>(value.data()));
         size_byte = sizeof(char) * value.size();
+        
     } else {
         type = DataType::UNKNOWN;
         begin = nullptr;
@@ -210,7 +229,12 @@ bool get_data(const Group& group, const std::string& name, T& value) {
 
     // Deserialize the byte vector back into the original type
     if constexpr (
-        std::is_same_v<T, std::vector<int>> ||
+        std::is_same_v<T, std::vector<int8_t>> ||
+        std::is_same_v<T, std::vector<int16_t>> ||
+        std::is_same_v<T, std::vector<int32_t>> ||
+        std::is_same_v<T, std::vector<uint8_t>> ||
+        std::is_same_v<T, std::vector<uint16_t>> ||
+        std::is_same_v<T, std::vector<uint32_t>> ||
         std::is_same_v<T, std::vector<float>> ||
         std::is_same_v<T, std::vector<double>> ||
         std::is_same_v<T, std::vector<Byte>>

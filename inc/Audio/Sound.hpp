@@ -11,7 +11,7 @@ namespace AMB {
 
 class Sound {
 public:
-    Sound(const std::string& path);
+    Sound(Mix_Chunk* sound);
 
     Sound(const Sound&) = delete; 
     Sound& operator=(const Sound&) = delete;

@@ -4,6 +4,7 @@
 #include "Audio/Audio.hpp"
 #include "Audio/Music.hpp"
 #include "Asset/AssetManager.hpp"
+#include "Asset/AssetFactory.hpp"
 
 int main(int argc, char* argv[]) {
 
@@ -12,13 +13,14 @@ int main(int argc, char* argv[]) {
     AMB::Timer timer(60);
     AMB::Audio audio(MIX_INIT_FLAC|MIX_INIT_MOD|MIX_INIT_MP3|MIX_INIT_OGG|MIX_INIT_MID|MIX_INIT_OPUS, 22050, 0x8010, 2, 1024);
     AMB::AssetManager asset_manager;
+    AMB::AssetFactory asset_factory(asset_manager);
 
-    AMB::AssetHandle music_handle = asset_manager.musics.add(std::string("test/res/Sky Corsair.mp3"));
+    AMB::AssetHandle music_handle = asset_factory.create_music(std::string("test/res/Sky Corsair.mp3"));
     if (!asset_manager.musics.validity(music_handle)) {
         std::cerr << "Failed to add music asset." << std::endl;
         return EXIT_FAILURE;
     }
-    AMB::AssetHandle sound_handle = asset_manager.sounds.add(std::string("test/res/but.wav"));
+    AMB::AssetHandle sound_handle = asset_factory.create_sound(std::string("test/res/but.wav"));
     if (!asset_manager.sounds.validity(sound_handle)) {
         std::cerr << "Failed to add sound asset." << std::endl;
         return EXIT_FAILURE;
@@ -35,10 +37,12 @@ int main(int argc, char* argv[]) {
         }
 
         if (event_manager.keyboard().key_down(AMB::KeyCode::KEY_CODE_SPACE)) {
-            if (music.is_playing()) {
-                music.stop();
-            } else {
+            if (!music.is_playing()) {
                 music.play();
+            } else if (music.is_paused()) {
+                music.resume();
+            } else {
+                music.pause();
             }
         }
 
@@ -46,7 +50,7 @@ int main(int argc, char* argv[]) {
             sound.play();
         }
 
-        window.present();
+        window.present(); 
 
         timer.wait();
 

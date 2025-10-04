@@ -11,7 +11,7 @@ namespace AMB {
 
 class Music {
 public:
-    Music(const std::string& path);
+    Music(Mix_Music* music);
 
     Music(const Music&) = delete; 
     Music& operator=(const Music&) = delete;

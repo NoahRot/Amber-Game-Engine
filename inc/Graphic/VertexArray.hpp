@@ -24,6 +24,8 @@ public:
 
     void set_index_buffer(const std::shared_ptr<IndexBuffer>& ib);
 
+    std::shared_ptr<IndexBuffer> get_index_buffer();
+
     uint32_t index() const;
 
 private:
@@ -31,5 +33,7 @@ private:
     std::vector<std::shared_ptr<VertexBuffer>> m_vertex_buffers;
     std::shared_ptr<IndexBuffer> m_index_buffer;
 };
+
+std::shared_ptr<VertexArray> create_vertex_array();
 
 }

@@ -43,4 +43,8 @@ uint32_t VertexBuffer::size() const {
     return m_size; 
 }
 
+std::shared_ptr<VertexBuffer> create_vertex_buffer(uint32_t size, bool static_draw) {
+    return std::make_shared<VertexBuffer>(size, static_draw);
+}
+
 }

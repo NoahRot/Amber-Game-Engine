@@ -36,4 +36,6 @@ private:
     bool m_static_draw;
 };
 
+std::shared_ptr<IndexBuffer> create_index_buffer(const std::vector<uint32_t>& indices, bool static_draw = true);
+
 }

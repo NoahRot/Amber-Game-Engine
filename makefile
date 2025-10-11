@@ -1,6 +1,8 @@
 # Define compilator and flags
 CC = g++
-CFLAGS = -std=c++20 -Wall -pedantic -g -pthread -O2 -ftree-vectorize -march=native -DDEBUG
+CFLAGS = -std=c++20 -Wall -pedantic -g -pthread -O2 -ftree-vectorize -march=native -DDEBUG # old
+# CFLAGS = -std=c++20 -Wall -Wextra -Wshadow -Wconversion -g3 -fsanitize=address -fno-omit-frame-pointer -pthread -DDEBUG # Debugging
+# CFLAGS = -std=c++20 -O2 -flto -funroll-loops -march=native -Wall -Wextra -pthread -DRELEASE # Release
 SHARED = -shared
 NO_WIN = -mwindows
 EXTENSION_EXE = exe

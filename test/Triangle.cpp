@@ -14,7 +14,8 @@ int main(int argc, char* argv[]) {
     AMB::EventManager event_manager(&window);
     AMB::Timer timer(60);
     AMB::AssetManager asset_manager;
-    AMB::AssetFactory asset_factory(asset_manager);
+    AMB::FontSystem font_system;
+    AMB::AssetFactory asset_factory(asset_manager, font_system);
 
     AMB::AssetHandle shader_handle = asset_factory.create_shader(std::string("test/res/Color.vert"), std::string("test/res/Color.frag"));
     if (!asset_manager.shaders.validity(shader_handle)) {
@@ -26,9 +27,9 @@ int main(int argc, char* argv[]) {
 
     std::vector<float> vertices = { 
         // Positions            // Colors
-         0.0f,  0.5f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Top vertex (Red)
-         0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex (Green)
-        -0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f  // Bottom left vertex (Blue)
+         0.0f,  0.5f, 1.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Top vertex (Red)
+         0.5f, -0.5f, 1.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex (Green)
+        -0.5f, -0.5f, 1.0f,     0.0f, 0.0f, 1.0f, 1.0f  // Bottom left vertex (Blue)
     };
     std::vector<uint32_t> indices = { 0, 1, 2 };
 

@@ -46,4 +46,8 @@ uint32_t IndexBuffer::size() const {
     return m_count * sizeof(uint32_t); 
 }
 
+std::shared_ptr<IndexBuffer> create_index_buffer(const std::vector<uint32_t>& indices, bool static_draw) {
+    return std::make_shared<IndexBuffer>(indices.data(), indices.size(), static_draw);
+}
+
 }

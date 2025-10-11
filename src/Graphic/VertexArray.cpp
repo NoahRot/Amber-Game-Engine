@@ -61,8 +61,16 @@ void VertexArray::set_index_buffer(const std::shared_ptr<IndexBuffer>& ib) {
     m_index_buffer = ib;
 }
 
+std::shared_ptr<IndexBuffer> VertexArray::get_index_buffer() {
+    return m_index_buffer;
+}
+
 uint32_t VertexArray::index() const { 
     return m_index; 
+}
+
+std::shared_ptr<VertexArray> create_vertex_array(){
+    return std::make_shared<VertexArray>();
 }
 
 }

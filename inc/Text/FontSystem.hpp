@@ -9,20 +9,11 @@ namespace AMB {
 
 class FontSystem {
 public:
-    FontSystem() {
-        if (FT_Init_FreeType(&m_ft_lib) != 0) {
-            Logger::instance().log(Fatal, "Can not initialize FreeType");
-            exit(EXIT_FAILURE);
-        }
-    }
+    FontSystem();
 
-    ~FontSystem() {
-        FT_Done_FreeType(m_ft_lib);
-    }
+    ~FontSystem();
 
-    FT_Library& get_library() {
-        return m_ft_lib;
-    }
+    FT_Library& get_library();
 
 private:
     FT_Library m_ft_lib;

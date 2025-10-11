@@ -33,13 +33,17 @@ int main(int argc, char* argv[]) {
     };
     std::vector<uint32_t> indices = { 0, 1, 2 };
 
-    std::shared_ptr<AMB::VertexBuffer> vbo_ptr = std::make_shared<AMB::VertexBuffer>(vertices.data(), vertices.size() * sizeof(float), true);
-    std::shared_ptr<AMB::IndexBuffer> ibo_ptr = std::make_shared<AMB::IndexBuffer>(indices.data(), indices.size(), true);
+    //std::shared_ptr<AMB::VertexBuffer> vbo_ptr = std::make_shared<AMB::VertexBuffer>(vertices.data(), vertices.size() * sizeof(float), true);
+    std::shared_ptr<AMB::VertexBuffer> vbo_ptr = AMB::create_vertex_buffer(7, false);
+    vbo_ptr->update(vertices.data(), vertices.size() * sizeof(float));
+    //std::shared_ptr<AMB::IndexBuffer> ibo_ptr = std::make_shared<AMB::IndexBuffer>(indices.data(), indices.size(), true);
+    std::shared_ptr<AMB::IndexBuffer> ibo_ptr = AMB::create_index_buffer(1, true);
+    ibo_ptr->update(indices.data(), indices.size());
     AMB::VertexAttribLayout layout;
     layout.add_float(3, false); // Position attribute (3 floats)
     layout.add_float(4, false); // Color attribute (4 floats)
 
-    AMB::VertexArray vao;
+    AMB::VertexArray vao; 
     vao.add_vertex_buffer(vbo_ptr, layout);
     vao.set_index_buffer(ibo_ptr);
 

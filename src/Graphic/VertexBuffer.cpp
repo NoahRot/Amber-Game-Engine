@@ -43,6 +43,42 @@ uint32_t VertexBuffer::size() const {
     return m_size; 
 }
 
+void VertexBuffer::update(const void* data, uint32_t size, uint32_t offset) {
+    // Resize buffer if necessary
+    if (m_size < size) {
+        if (2*m_size < size) {
+            change_capacity(size, false);
+        }else{
+            change_capacity(2*m_size, false);
+        }
+    }
+
+    // Update data
+    glBindBuffer(GL_ARRAY_BUFFER, m_index);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+}
+
+void VertexBuffer::change_capacity(uint32_t new_capacity, bool conserve_data) {
+    glBindBuffer(GL_ARRAY_BUFFER, m_index);
+
+    std::vector<unsigned char> old_data;
+    uint32_t copy_size = std::min(new_capacity, m_size);
+
+    if (conserve_data && m_size > 0) {
+        old_data.resize(copy_size);
+        glGetBufferSubData(GL_ARRAY_BUFFER, 0, copy_size, old_data.data());
+    }
+
+    glBufferData(GL_ARRAY_BUFFER, new_capacity, nullptr, m_static_draw ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+
+    if (conserve_data && !old_data.empty()) {
+        glBufferSubData(GL_ARRAY_BUFFER, 0, copy_size, old_data.data());
+    }
+
+    m_size = new_capacity;
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 std::shared_ptr<VertexBuffer> create_vertex_buffer(uint32_t size, bool static_draw) {
     return std::make_shared<VertexBuffer>(size, static_draw);
 }

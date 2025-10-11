@@ -28,18 +28,9 @@ public:
 
     uint32_t size() const;
 
-    void update(const void* data, uint32_t size, uint32_t offset = 0) {
-        bind();
-        glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
-        unbind();
-    }
+    void update(const void* data, uint32_t size, uint32_t offset = 0);
 
-    void change_data(const void* data, uint32_t size) {
-        bind();
-        GLenum usage = m_static_draw ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW;
-        glBufferData(GL_ARRAY_BUFFER, size, data, usage);
-        unbind();
-    }
+    void change_capacity(uint32_t new_capacity, bool conserve_data);
 
 private:
     uint32_t m_index;

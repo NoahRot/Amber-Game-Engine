@@ -11,26 +11,17 @@ namespace AMB {
 
 class Font {
 public:
-    Font(const std::map<char, Character>& char_map, uint32_t height, Texture& texture)
-    : m_char_map(char_map), m_height(height), m_texture(texture) {}
+    Font(const std::map<char, Character>& char_map, uint32_t height, Texture& texture);
 
-    ~Font() {}
+    ~Font();
 
-    Character get_char(char c) {
-        return m_char_map[c];
-    }
+    Character get_char(char c);
 
-    int32_t get_height() const {
-        return m_height;
-    }
+    int32_t get_height() const;
 
-    Texture& get_texture() const {
-        return m_texture;
-    }
+    Texture& get_texture() const;
 
-    static uint32_t get_char_px_space() {
-        return CHAR_PX_SPACE;
-    }
+    static uint32_t get_char_px_space();
 
 private:
     std::map<char, Character> m_char_map;

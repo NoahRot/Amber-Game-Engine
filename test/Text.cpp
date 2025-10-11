@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         std::cout << "Shader loaded successfully." << std::endl;
     }
 
-    AMB::AssetHandle font_handle = asset_factory.create_font(std::string("test/res/OpenSans.ttf"), 100);
+    AMB::AssetHandle font_handle = asset_factory.create_font(std::string("test/res/OpenSans.ttf"), 16);
     if (!asset_manager.fonts.validity(font_handle)) {
         std::cerr << "Failed to add font asset." << std::endl;
         return EXIT_FAILURE;
@@ -49,61 +49,48 @@ int main(int argc, char* argv[]) {
         float u, v;     // Texture coordinates
     };
 
-    std::vector<Vertex> vertices = { 
-        Vertex{-1.0f, -0.2f, 0.0f,  0.0f, 0.0f}, // Bottom left vertex (Red)
-        Vertex{ 1.0f, -0.2f, 0.0f,  1.0f, 0.0f}, // Bottom right vertex (Green)
-        Vertex{ 1.0f,  0.2f, 0.0f,  1.0f, 1.0f}, // Top right vertex (Blue)
-        Vertex{-1.0f,  0.2f, 0.0f,  0.0f, 1.0f}  // Top left vertex (White)
-    };
-
-    std::vector<uint32_t> indices = {
-        0, 1, 2, // First triangle
-        2, 3, 0  // Second triangle
-    };
-
-    std::shared_ptr<AMB::VertexBuffer> vbo_ptr = AMB::create_vertex_buffer(vertices, true);
-    std::shared_ptr<AMB::IndexBuffer> ibo_ptr = AMB::create_index_buffer(indices, true);
-    AMB::VertexAttribLayout layout;
-    layout.add_float(3, false); // Position attribute (3 floats)
-    layout.add_float(4, false); // Color attribute (3 floats) 
-    layout.add_float(2, false); // Texture coordinate attribute (2 floats)
-
-    std::shared_ptr<AMB::VertexArray> vao_ptr = AMB::create_vertex_array();
-    vao_ptr->add_vertex_buffer(vbo_ptr, layout);
-    vao_ptr->set_index_buffer(ibo_ptr);
-
     AMB::Shader& shader = asset_manager.shaders.get(shader_handle);
     shader.use_shader();
     AMB::Font& font = asset_manager.fonts.get(font_handle);
-    AMB::Texture& texture = font.get_texture();
+    AMB::Texture& texture = font.get_texture(); 
     texture.bind(0);
 
-    mat::Mat4f mvp = mat::identity<float, 4>();
     mat::Mat4f ortho = mat::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
 
-    AMB::TextRenderer text_renderer(font, shader, "Hello World!", 1.0f, 1.0f, 1.0f, mat::Vec3f{200.0f, 200.0f, 0.5f}, 100);
-    text_renderer.build_mesh(1.0f, 1.0f, 1.0f);
+    AMB::TextRenderer text_renderer(font, shader, 1.0f, 1.0f, 1.0f, 30); 
+    text_renderer.submit_text("Hello World!\nThis is a text rendering test.\n0123456789", 
+        mat::Vec3f({25.0f, 500.0f, 0.0f}), 1.0f, 1.0f, 0.0f, 1.0f);
+    text_renderer.build_mesh();
 
     while (!event_manager.is_quitting()) {
         event_manager.manage();
 
         if (event_manager.keyboard().key_down(AMB::KeyCode::KEY_CODE_ESCAPE)) {
-            event_manager.quit();
+            event_manager.quit(); 
+        }
+
+        if (event_manager.keyboard().key_down(AMB::KeyCode::KEY_CODE_SPACE)) {
+
+            text_renderer.reset();
+            text_renderer.submit_text("The quick brown fox jumps over the lazy dog.\n"
+                                      "Pack my box with five dozen liquor jugs.\n"
+                                      "Sphinx of black quartz, judge my vow.\n"
+                                      "How vexingly quick daft zebras jump!\n"
+                                      "Bright vixens jump; dozy fowl quack.\n"
+                                      "Jackdaws love my big sphinx of quartz.\n"
+                                      "The five boxing wizards jump quickly.\n"
+                                      "Quick zephyrs blow, vexing daft Jim.\n"
+                                      "Two driven jocks help fax my big quiz.\n"
+                                      "Five quacking zephyrs jolt my wax bed.\n",
+                                      mat::Vec3f({25.0f, 500.0f, 0.0f}), 1.0f, 1.0f, 0.0f, 1.0f);
+            text_renderer.build_mesh();
         }
         
         // Clear the screen
         renderer.clear(); 
 
         // Draw the text
-        texture.bind(0);
-        shader.set_mat4f("u_mvp", ortho);
-        text_renderer.draw(); 
-
-        // Draw font atlas
-        texture.bind(0);
-        shader.set_mat4f("u_mvp", mvp);
-        shader.set_4f("u_color", {1.0f, 0.0f, 1.0f, 1.0f});
-        renderer.draw_arrays(vao_ptr, shader);
+        text_renderer.draw(ortho); 
 
         // Present the frame
         window.present(); 

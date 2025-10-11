@@ -30,12 +30,19 @@ public:
 
     uint32_t size() const;
 
+    void update(const uint32_t* data, uint32_t size);
+
+    void change_capacity(uint32_t new_capacity, bool conserve_data);
+
 private:
     uint32_t m_index;
     uint32_t m_count;
+    uint32_t m_capacity;
     bool m_static_draw;
 };
 
 std::shared_ptr<IndexBuffer> create_index_buffer(const std::vector<uint32_t>& indices, bool static_draw = true);
+
+std::shared_ptr<IndexBuffer> create_index_buffer(uint32_t capacity, bool static_draw = true);
 
 }

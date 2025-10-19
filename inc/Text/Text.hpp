@@ -20,7 +20,7 @@ struct VertexText {
 
 class TextRenderer {
 public:
-    TextRenderer(Font& font, Shader& shader, float r, float g, float b, uint32_t reserve = 1024);
+    TextRenderer(Font& font, Shader& shader, uint32_t reserve = 1024);
 
     ~TextRenderer();
 

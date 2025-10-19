@@ -22,7 +22,7 @@ public:
 
     void add_vertex_buffer(const std::shared_ptr<VertexBuffer>& vb, const VertexAttribLayout& layout);
 
-    void set_index_buffer(const std::shared_ptr<IndexBuffer>& ib);
+    void set_index_buffer(const std::shared_ptr<IndexBuffer>& ib = nullptr);
 
     std::shared_ptr<IndexBuffer> get_index_buffer();
 

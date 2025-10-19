@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     AMB::TextRenderer text_renderer(font, shader, 1.0f, 1.0f, 1.0f, 30); 
     text_renderer.submit_text("Hello World!\nThis is a text rendering test.\n0123456789", 
         mat::Vec3f({25.0f, 500.0f, 0.0f}), 1.0f, 1.0f, 0.0f, 1.0f);
-    text_renderer.build_mesh();
+    text_renderer.build_mesh(); 
 
     while (!event_manager.is_quitting()) {
         event_manager.manage();

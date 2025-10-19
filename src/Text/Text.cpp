@@ -2,7 +2,7 @@
 
 namespace AMB {
 
-TextRenderer::TextRenderer(Font& font, Shader& shader, float r, float g, float b, uint32_t reserve)
+TextRenderer::TextRenderer(Font& font, Shader& shader, uint32_t reserve)
 : m_font(font), m_shader(shader), m_char_count(0), m_vertex(), m_index(),
     m_vao(nullptr), m_vbo(nullptr), m_ibo(nullptr), m_text_layout()
 {
@@ -70,7 +70,7 @@ void TextRenderer::submit_text(const std::string& text, mat::Vec3f position, flo
 
             current_x += c.advance >> 6;
 
-            m_char_count += 1;
+            m_char_count++;
         }
     }
 }

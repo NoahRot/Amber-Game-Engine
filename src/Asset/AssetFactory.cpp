@@ -125,6 +125,19 @@ AssetHandle AssetFactory::create_texture(int32_t width, int32_t height, uint8_t 
     return m_manager.textures.add(texture_index, width, height, 4);
 }
 
+AssetHandle AssetFactory::create_texture_from_data(int32_t width, int32_t height, uint32_t format_store, uint32_t format_load, uint32_t data_type, void* data) {
+    // Generate the texture and bind it
+    uint32_t texture_index;
+    glGenTextures(1, &texture_index);
+    glBindTexture(GL_TEXTURE_2D, texture_index);
+
+    // Send the texture to openGL
+    glTexImage2D(GL_TEXTURE_2D, 0, format_store, width, height, 0, format_load, data_type, data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return m_manager.textures.add(texture_index, width, height, 4);
+}
+
 AssetHandle AssetFactory::create_font(const std::string& path, uint32_t font_size) {
     // Get logger
     const Logger& logger = Logger::instance();

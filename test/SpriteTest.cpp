@@ -10,13 +10,17 @@
 #include "Graphic/Texture.hpp"
 #include "Graphic/Renderer.hpp"
 #include "Sprite/Sprite.hpp"
+#include "Sprite/SpriteFactory.hpp"
+#include "Sprite/SpriteSheet.hpp"
+#include "Sprite/SpriteRenderer.hpp"
+#include "Sprite/SpriteBatchRenderer.hpp"
 
 int main(int argc, char* argv[]) {
 
     AMB::Window window(800, 600, "Test Window", SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL);
     AMB::EventManager event_manager(&window);
     AMB::Timer timer(60);
-    AMB::AssetManager asset_manager;
+    AMB::AssetManager asset_manager; 
     AMB::FontSystem font_system;
     AMB::AssetFactory asset_factory(asset_manager, font_system);
     AMB::Renderer renderer;

@@ -1,8 +1,10 @@
 # Define compilator and flags
 CC = g++
-CFLAGS = -std=c++20 -Wall -pedantic -g -pthread -O2 -ftree-vectorize -march=native -DDEBUG # old
+CFLAGS = -std=c++20 -Wall -pedantic -g -pthread -ftree-vectorize -march=native -DDEBUG # old
 # CFLAGS = -std=c++20 -Wall -Wextra -Wshadow -Wconversion -g3 -fsanitize=address -fno-omit-frame-pointer -pthread -DDEBUG # Debugging
 # CFLAGS = -std=c++20 -O2 -flto -funroll-loops -march=native -Wall -Wextra -pthread -DRELEASE # Release
+CFLAGS += -DFT_STATIC_LIBRARY
+CFLAGS += -gdwarf-2
 SHARED = -shared
 NO_WIN = -mwindows
 EXTENSION_EXE = exe
@@ -28,6 +30,8 @@ INCLUDES = -I $(DIR_INC) -I $(DIR_EXT)
 
 # Gald
 GLAD_SRC = $(DIR_SRC)/glad/glad.c
+GLAD_OBJ = $(DIR_OBJ)/glad/glad.o
+GLAD_INC = -I $(DIR_INC)
 
 # Subdirectories for all the modules
 SUBDIRECTORIES = $(wildcard $(DIR_SRC)/*/)
@@ -45,7 +49,14 @@ define \n
 
 endef
 
-all: $(DIR_LIB)/$(ENGINE_NAME).lib $(DIR_BIN)/$(ENGINE_NAME).dll
+all: glad $(DIR_LIB)/$(ENGINE_NAME).lib $(DIR_BIN)/$(ENGINE_NAME).dll
+
+show:
+	@echo $(GLAD_SRC)
+
+glad:
+	@echo "Building GLAD..."
+	$(CC) $(CFLAGS) -c $(GLAD_SRC) -o $(GLAD_OBJ) $(GLAD_INC)
 
 # Setup project, create folders if they do not exist
 setup:
@@ -63,7 +74,7 @@ $(DIR_BIN)/$(ENGINE_NAME).dll: $(OBJ)
 # Static library
 $(DIR_LIB)/$(ENGINE_NAME).lib: $(OBJ)
 	@echo "Building static library..."
-	ar rcs $@ $^
+	ar rcs $@ $^ $(GLAD_OBJ)
 
 # Build object files
 $(DIR_OBJ)/%.o: $(DIR_SRC)/%.cpp
@@ -71,7 +82,7 @@ $(DIR_OBJ)/%.o: $(DIR_SRC)/%.cpp
 
 # Build each test executable
 $(DIR_BIN)/%.$(EXTENSION_EXE): $(DIR_TEST)/%.cpp
-	$(CC) $(CFLAGS) $< -o $@ $(GLAD_SRC) $(INCLUDES) $(LIBRARY)
+	$(CC) $(CFLAGS) $< -o $@ $(INCLUDES) $(LIBRARY)
 
 # Compile all tests
 tests: $(TEST_EXE)
@@ -86,6 +97,7 @@ help:
 	@echo  clean_tests  		: Remove all compiled test executables.
 	@echo  help         		: Display this help message.
 	@echo  tests         		: Compile all the test files in the test folder.
+	@echo  glad         		: Compile GLAD library (to do before compiling library or tests).
 	@echo  build/bin/test.exe 	: Replace test by the actual test file name to compile a test file. List of the tests:
 	$(foreach T,$(TEST_EXE), @echo    + $(T)${\n})
 
@@ -95,6 +107,7 @@ clean:
 	-$(RM) $(subst /,\,$(DIR_LIB)/$(ENGINE_NAME).lib)
 	-$(RM) $(subst /,\,$(OBJ))
 	-$(RM) $(subst /,\,$(DIR_BIN)/*.exe)
+	-$(RM) $(subst /,\,$(GLAD_OBJ))
 
 # Clean test files
 clean_tests:

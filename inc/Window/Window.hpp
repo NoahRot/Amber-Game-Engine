@@ -4,7 +4,7 @@
 #include <string>
 
 #include <SDL2/SDL.h>
-#include <External/glad/glad.h>
+#include <glad/glad.h>
 
 #include "Logger/Logger.hpp"
 

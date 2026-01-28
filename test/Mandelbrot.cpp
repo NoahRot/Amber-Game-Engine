@@ -23,7 +23,7 @@ struct Vertex {
     float u, v;  // Texture coordinates
 };
 
-enum class FractalMode {
+enum class FractalMode { 
     MANDELBROT,
     JULIA
 };

@@ -46,7 +46,7 @@ private:
                 if (content.size() >= size_t(5) && content.substr(0,5) == "Group") {
                     // It's a subgroup
                     std::string group_name = content.substr(6); // Remove "Group " and ":"
-                    Group& subgroup = group[group_name];
+                    //Group& subgroup = group[group_name];
                     std::cout << "Reading subgroup: " << group_name << std::endl;
                     //read_txt(subgroup, file, current_level);
 

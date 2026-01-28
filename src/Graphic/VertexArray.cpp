@@ -51,10 +51,6 @@ void VertexArray::add_vertex_buffer(const std::shared_ptr<VertexBuffer>& vb, con
 
     // Add the vertex buffer to the list of vertex buffers for this VAO
     m_vertex_buffers.push_back(vb);
-
-    // Unbind VBO and VAO to prevent accidental modification
-    vb->unbind();
-    unbind();
 }
 
 void VertexArray::add_vertex_buffer(const std::shared_ptr<VertexBuffer>& vb, const VertexAttribLayout& layout, uint32_t overwrite_stride) {
@@ -90,11 +86,15 @@ void VertexArray::add_vertex_buffer(const std::shared_ptr<VertexBuffer>& vb, con
     m_vertex_buffers.push_back(vb);
 
     // Unbind VBO and VAO to prevent accidental modification
-    vb->unbind();
-    unbind();
 }
 
 void VertexArray::set_index_buffer(const std::shared_ptr<IndexBuffer>& ib) {
+    bind();                    // Critical: VAO must be bound
+    if (ib) {
+        ib->bind();            // Bind the index buffer
+    } else {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);  // Optional: unbind if nullptr
+    }
     m_index_buffer = ib;
 }
 

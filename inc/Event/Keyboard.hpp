@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <vector>
 
 #include <SDL2/SDL.h>
 
@@ -43,10 +44,14 @@ public:
     /// @param code Code of the key
     void manage_up(KeyCode code);
 
+    const std::vector<char>& get_buffer() const { return m_buffer; }
+
 private:
 
     // Key state 0 = nothing, 1 = down, 2 = pressed, 3 = up
     std::array<uint8_t, KEY_NUM_CODES> m_key_state;
+    
+    std::vector<char> m_buffer;
 };
 
 }

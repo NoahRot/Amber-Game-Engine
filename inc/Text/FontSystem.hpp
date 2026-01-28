@@ -1,9 +1,9 @@
 #pragma once
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
 #include "Logger/Logger.hpp"
+
+struct FT_LibraryRec_;   // forward declaration FreeType
+typedef struct FT_LibraryRec_* FT_Library;
 
 namespace AMB {
 

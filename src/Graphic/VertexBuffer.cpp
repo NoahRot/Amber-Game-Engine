@@ -9,7 +9,6 @@ VertexBuffer::VertexBuffer(const void* data, uint32_t size, bool static_draw)
     bind();
     GLenum usage = static_draw ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW;
     glBufferData(GL_ARRAY_BUFFER, size, data, usage);
-    unbind();
 }
 
 VertexBuffer::VertexBuffer(uint32_t size, bool static_draw)
@@ -19,8 +18,7 @@ VertexBuffer::VertexBuffer(uint32_t size, bool static_draw)
     bind();
     GLenum usage = static_draw ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW;
     std::vector<char> empty_data(size, 0);
-    glBufferData(GL_ARRAY_BUFFER, size, &empty_data, usage);
-    unbind();
+    glBufferData(GL_ARRAY_BUFFER, size, empty_data.data(), usage);
 }
 
 VertexBuffer::~VertexBuffer() {
@@ -55,7 +53,7 @@ void VertexBuffer::update(const void* data, uint32_t size, uint32_t offset) {
 
     // Update data
     glBindBuffer(GL_ARRAY_BUFFER, m_index);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+    glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
 }
 
 void VertexBuffer::change_capacity(uint32_t new_capacity, bool conserve_data) {

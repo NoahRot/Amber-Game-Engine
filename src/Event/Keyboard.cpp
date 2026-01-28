@@ -1,5 +1,7 @@
 #include "Event/Keyboard.hpp"
 
+#include <iostream>
+
 namespace AMB {
 
 Keyboard::Keyboard() {
@@ -19,6 +21,7 @@ bool Keyboard::key_press(KeyCode code) const {
 }
 
 void Keyboard::manage() {
+    m_buffer.clear();
     for (auto& state : m_key_state) {
 
         // From down to press
@@ -37,6 +40,22 @@ void Keyboard::reset() {
 }
 
 void Keyboard::manage_down(KeyCode code) {
+    if (code >= KEY_CODE_A && code <= KEY_CODE_Z){
+        if (key_press(KeyCode::KEY_CODE_LSHIFT) || key_press(KeyCode::KEY_CODE_RSHIFT)){
+            m_buffer.push_back('A' + (code - KEY_CODE_A));  // 4 → 'A', 5 → 'B', ..., 29 → 'Z'
+        }else {
+            m_buffer.push_back('a' + (code - KEY_CODE_A));  // 4 → 'A', 5 → 'B', ..., 29 → 'Z'
+        }
+    }else if (code >= KEY_CODE_1 && code <= KEY_CODE_0){
+        if (code == KEY_CODE_0) {
+            m_buffer.push_back('0');
+        }else{
+            m_buffer.push_back('1' + (code - KEY_CODE_1));  // 30 → '1', 31 → '2', ..., 39 → '0'
+        }
+    }else if (code == KEY_CODE_BACKSPACE) {
+        m_buffer.push_back('~'); // Backslash (placeholder)
+    }
+    
     m_key_state[code] = 1;
 }
 

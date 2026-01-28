@@ -46,20 +46,20 @@ uint32_t IndexBuffer::size() const {
     return m_count * sizeof(uint32_t); 
 }
 
-void IndexBuffer::update(const uint32_t* data, uint32_t size) {
+void IndexBuffer::update(const uint32_t* data, uint32_t count) {
     // Resize buffer if necessary
-    if (m_capacity < size) {
-        if (2*m_capacity < size) {
-            change_capacity(size, false);
+    if (m_capacity < count) {
+        if (2*m_capacity < count) {
+            change_capacity(count, false);
         }else{
             change_capacity(2*m_capacity, false);
         }
     }
 
     // Update data
-    m_count = size;
+    m_count = count;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index);
-    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, size*sizeof(uint32_t), data);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, count*sizeof(uint32_t), data);
 }
 
 void IndexBuffer::change_capacity(uint32_t new_capacity, bool conserve_data) {

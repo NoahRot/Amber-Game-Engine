@@ -6,6 +6,9 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "External/stb_image/stb_image_write.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 namespace AMB {
 
 AssetFactory::AssetFactory(AssetManager& manager, FontSystem& font_system)
@@ -170,7 +173,7 @@ AssetHandle AssetFactory::create_font(const std::string& path, uint32_t font_siz
         }else{                                          // Create Character
             Character character = {
                 0.0f, 0.0f, 0.0f, 0.0f, 
-                face->glyph->bitmap.width, face->glyph->bitmap.rows,
+                (int)face->glyph->bitmap.width, (int)face->glyph->bitmap.rows,
                 face->glyph->bitmap_left, face->glyph->bitmap_top,
                 face->glyph->advance.x
             };

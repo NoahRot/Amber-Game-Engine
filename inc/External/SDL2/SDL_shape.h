@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2021 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -48,19 +48,21 @@ extern "C" {
  * and flags.
  *
  * \param title The title of the window, in UTF-8 encoding.
- * \param x The x position of the window, ::SDL_WINDOWPOS_CENTERED, or
- *          ::SDL_WINDOWPOS_UNDEFINED.
- * \param y The y position of the window, ::SDL_WINDOWPOS_CENTERED, or
- *          ::SDL_WINDOWPOS_UNDEFINED.
+ * \param x The x position of the window, SDL_WINDOWPOS_CENTERED, or
+ *          SDL_WINDOWPOS_UNDEFINED.
+ * \param y The y position of the window, SDL_WINDOWPOS_CENTERED, or
+ *          SDL_WINDOWPOS_UNDEFINED.
  * \param w The width of the window.
  * \param h The height of the window.
  * \param flags The flags for the window, a mask of SDL_WINDOW_BORDERLESS with
- *              any of the following: ::SDL_WINDOW_OPENGL,
- *              ::SDL_WINDOW_INPUT_GRABBED, ::SDL_WINDOW_HIDDEN,
- *              ::SDL_WINDOW_RESIZABLE, ::SDL_WINDOW_MAXIMIZED,
- *              ::SDL_WINDOW_MINIMIZED, ::SDL_WINDOW_BORDERLESS is always set,
- *              and ::SDL_WINDOW_FULLSCREEN is always unset.
+ *              any of the following: SDL_WINDOW_OPENGL,
+ *              SDL_WINDOW_INPUT_GRABBED, SDL_WINDOW_HIDDEN,
+ *              SDL_WINDOW_RESIZABLE, SDL_WINDOW_MAXIMIZED,
+ *              SDL_WINDOW_MINIMIZED, SDL_WINDOW_BORDERLESS is always set, and
+ *              SDL_WINDOW_FULLSCREEN is always unset.
  * \return the window created, or NULL if window creation failed.
+ *
+ * \since This function is available since SDL 2.0.0.
  *
  * \sa SDL_DestroyWindow
  */
@@ -72,6 +74,8 @@ extern DECLSPEC SDL_Window * SDLCALL SDL_CreateShapedWindow(const char *title,un
  * \param window The window to query for being shaped.
  * \return SDL_TRUE if the window is a window that can be shaped, SDL_FALSE if
  *         the window is unshaped or NULL.
+ *
+ * \since This function is available since SDL 2.0.0.
  *
  * \sa SDL_CreateShapedWindow
  */
@@ -116,6 +120,8 @@ typedef struct SDL_WindowShapeMode {
  *         argument, or SDL_NONSHAPEABLE_WINDOW if the SDL_Window given does
  *         not reference a valid shaped window.
  *
+ * \since This function is available since SDL 2.0.0.
+ *
  * \sa SDL_WindowShapeMode
  * \sa SDL_GetShapedWindowMode
  */
@@ -132,6 +138,8 @@ extern DECLSPEC int SDLCALL SDL_SetWindowShape(SDL_Window *window,SDL_Surface *s
  *         SDL_NONSHAPEABLE_WINDOW if the SDL_Window given is not a shaped
  *         window, or SDL_WINDOW_LACKS_SHAPE if the SDL_Window given is a
  *         shapeable window currently lacking a shape.
+ *
+ * \since This function is available since SDL 2.0.0.
  *
  * \sa SDL_WindowShapeMode
  * \sa SDL_SetWindowShape

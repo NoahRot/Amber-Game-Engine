@@ -239,6 +239,7 @@ mat::Vec2f UI_Label::compute_dimension(Font& font) {
         max_x = current_x;
     }
 
+    p_dimension = mat::Vec2f{max_x, current_y};
     return mat::Vec2f{max_x, current_y};
 }
 
@@ -250,7 +251,7 @@ void UI_Label::submit(UI_Renderer& ui_renderer) {
     float current_x(0), current_y(0);
     float r=p_color[0], g=p_color[1], b=p_color[2], a=p_color[3];
     Font& font = ui_renderer.get_font();
-    p_dimension = compute_dimension(font);
+    compute_dimension(font);
     mat::Vec2f position = get_absolute_position();
 
     for (uint32_t i(0) ; i < m_text.size() ; ++i) {

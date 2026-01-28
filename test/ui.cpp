@@ -11,6 +11,8 @@
 #include "Time/Timer.hpp"
 #include "Graphic/Renderer.hpp"
 
+#include "Graphic/PostProcessor.hpp"
+
 void callback() {
     std::cout << "Button clicked" << std::endl;
 }
@@ -49,6 +51,16 @@ int main(int argc, char* argv[]) {
     }
     AMB::Shader& shader = asset_manager.shaders.get(shader_handle);
 
+    AMB::AssetHandle shader_pixel_handle = asset_factory.create_shader("test/res/post.vert", "test/res/pixelated.frag");
+    if (!asset_manager.shaders.validity(shader_pixel_handle)) {
+        logger.log(AMB::Fatal, "Can not load shader");
+        exit(EXIT_FAILURE);
+    }
+    AMB::Shader& shader_pixel = asset_manager.shaders.get(shader_pixel_handle);
+    shader_pixel.use_shader();
+    shader_pixel.set_2f("u_resolution", mat::Vec2f{float(window.get_width()), float(window.get_height())});
+    shader_pixel.set_1f("u_pixel_size", 4);
+
     mat::Mat4f mvp = mat::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
 
     AMB::UI::UI_Renderer ui_renderer(shader, texture, font, 128);
@@ -74,6 +86,8 @@ int main(int argc, char* argv[]) {
     renderer.set_depth_test(false);
     renderer.set_blend(true);
    
+    AMB::PostProcessor post_processor(window.get_width(), window.get_height());
+    //post_processor.add_shader_effect(&shader_pixel);
 
     while (!event_manager.is_quitting())
     {
@@ -90,7 +104,10 @@ int main(int argc, char* argv[]) {
         ui_menu.update(event_manager);
 
         // Draw the triangle
+        post_processor.begin();
         ui_renderer.draw(mvp);
+
+        post_processor.end(shader_pixel);
 
         // Present the frame
         window.present(); 

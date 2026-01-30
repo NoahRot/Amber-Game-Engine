@@ -19,6 +19,9 @@ public:
 
     uint32_t get_color_texture() const;
 
+    int get_width() { return m_width; }
+    int get_height() {return m_height; }
+
 private:
     uint32_t m_fbo;
     uint32_t m_color_texture;

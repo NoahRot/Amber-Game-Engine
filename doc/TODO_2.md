@@ -36,9 +36,9 @@ These are not strictly required but make the engine more functional and optimize
 
     [ ] Mesh (Basic model/geometry management)
     [ ] Material (Handles shaders, textures, and properties)
-    [ ] Framebuffer (Allows post-processing, screen effects)
+    [V] Framebuffer (Allows post-processing, screen effects)
     [V] Font Rendering (Using FreeType for text rendering)
-    [ ] 2D Renderer (Batch rendering for sprites, UI elements)
+    [V] 2D Renderer (Batch rendering for sprites, UI elements)
 
 7️⃣ Audio
 
@@ -64,7 +64,7 @@ These are complex but will significantly enhance the engine.
 
     [ ] Deferred Rendering (Optimized rendering pipeline)
     [ ] Shadow Mapping (Dynamic lighting/shadows)
-    [ ] Post-Processing (Bloom, motion blur, etc.)
+    [~] Post-Processing (Bloom, motion blur, etc.)
     [ ] PBR (Physically-Based Rendering) (Realistic lighting and materials)
 
 🔟 Scripting & AI
@@ -96,8 +96,8 @@ These are complex but will significantly enhance the engine.
     [ ] Camera System (Multiple camera types, transitions)
     [ ] Lighting System (Basic lights, light manager)
     [ ] Particle System (For effects like fire, smoke, etc.)
-    [ ] UI System (Buttons, sliders, layout, etc.)
-    [ ] Save/Load System (Serialization for game state)
+    [V] UI System (Buttons, sliders, layout, etc.)
+    [~] Save/Load System (Serialization for game state)
     [V] Math Library (Vectors, matrices, quaternions, etc.)
 
 🔹 Optional / Advanced

@@ -58,7 +58,7 @@ struct Hierarchy {
     std::string name;
     Group root;
 
-    Group& operator[](const std::string& name);
+    Group& operator[](const std::string& group_name);
 };
 
 void print_hierarchy(const Hierarchy& hierarchy);

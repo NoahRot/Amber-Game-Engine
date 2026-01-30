@@ -17,13 +17,18 @@ struct PostProcessorVertex {
     float u, v;
 };
 
+enum class PostProcessMode {
+    single,
+    multiple
+};
+
 class PostProcessor {
 public:
     PostProcessor(uint32_t width, uint32_t height);
 
     void begin(); // bind scene framebuffer
 
-    void end(Shader& final_shader);   // apply effects and output to screen
+    void end(Shader& final_shader, PostProcessMode process_mode = PostProcessMode::single);   // apply effects and output to screen
 
     void add_shader_effect(Shader* effect);
 
@@ -37,6 +42,8 @@ private:
     std::shared_ptr<VertexArray> m_vao;
     std::shared_ptr<VertexBuffer> m_vbo;
     std::shared_ptr<IndexBuffer> m_ibo;
+
+    int m_width, m_height;
 };
 
 }

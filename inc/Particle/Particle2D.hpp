@@ -1,8 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <array>
 #include <stack>
 #include <random>
+#include <functional>
 
 #include "mat/Math.hpp"
 #include "Graphic/Layout.hpp"
@@ -12,18 +14,25 @@
 
 namespace AMB {
 
-struct Particle2D {
-    Particle2D()
-    : position({0.0f, 0.0f}), r(1.0f), g(1.0f), b(1.0f), a(1.0f), size(1.0f), 
-      velocity({0.0f, 0.0f}), life_time(1000)
-    {}
+struct Particle2DStorage {
+	std::vector<mat::Vec2f> position;
+	std::vector<mat::Vec2f> dimension;
+	std::vector<mat::Vec4f> color;
+	std::vector<mat::Vec2f> velocity;
+	std::vector<float> 	life_time;
+};
 
-    mat::Vec2f position;
-    float r, g, b, a;
-    float size;
+struct Particle2DContext {
+	mat::Vec2f& position;
+	mat::Vec2f& dimension;
+	mat::Vec4f& color;
+	mat::Vec2f& velocity;
+	float& life_time;
+};
 
-    mat::Vec2f velocity;
-    int32_t life_time;
+struct Particle2DVertex {
+	float x, y;
+	float r, g, b, a;
 };
 
 }

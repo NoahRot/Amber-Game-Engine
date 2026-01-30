@@ -61,6 +61,17 @@ int main(int argc, char* argv[]) {
     shader_pixel.set_2f("u_resolution", mat::Vec2f{float(window.get_width()), float(window.get_height())});
     shader_pixel.set_1f("u_pixel_size", 4);
 
+    AMB::AssetHandle shader_non_pixel_handle = asset_factory.create_shader("test/res/post.vert", "test/res/pixelated_not.frag");
+    if (!asset_manager.shaders.validity(shader_non_pixel_handle)) {
+        logger.log(AMB::Fatal, "Can not load shader");
+        exit(EXIT_FAILURE);
+    }
+    AMB::Shader& shader_non_pixel = asset_manager.shaders.get(shader_non_pixel_handle);
+    shader_non_pixel.use_shader();
+    shader_non_pixel.set_2f("u_resolution", mat::Vec2f{float(window.get_width()), float(window.get_height())});
+    shader_non_pixel.set_1f("u_pixel_size", 4);
+
+
     mat::Mat4f mvp = mat::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
 
     AMB::UI::UI_Renderer ui_renderer(shader, texture, font, 128);
@@ -88,6 +99,7 @@ int main(int argc, char* argv[]) {
    
     AMB::PostProcessor post_processor(window.get_width(), window.get_height());
     //post_processor.add_shader_effect(&shader_pixel);
+    bool pixelized_post_processing = false;
 
     while (!event_manager.is_quitting())
     {
@@ -95,6 +107,9 @@ int main(int argc, char* argv[]) {
 
         if (event_manager.keyboard().key_down(AMB::KeyCode::KEY_CODE_ESCAPE)) {
             event_manager.quit();
+        }
+        if (event_manager.keyboard().key_down(AMB::KEY_CODE_SPACE)) {
+            pixelized_post_processing = !pixelized_post_processing;
         }
         
         // Clear the screen
@@ -107,7 +122,11 @@ int main(int argc, char* argv[]) {
         post_processor.begin();
         ui_renderer.draw(mvp);
 
-        post_processor.end(shader_pixel);
+        if (pixelized_post_processing) {
+            post_processor.end(shader_pixel);
+        }else{
+            post_processor.end(shader_non_pixel);
+        }
 
         // Present the frame
         window.present(); 

@@ -18,8 +18,8 @@ bool Group::has_group(const std::string& name) const {
     return subgroups.find(name) != subgroups.end();
 }
 
-Group& Hierarchy::operator[](const std::string& name) {
-    return root[name];
+Group& Hierarchy::operator[](const std::string& group_name) {
+    return root[group_name];
 }
 
 void print_hierarchy(const Hierarchy& hierarchy) {

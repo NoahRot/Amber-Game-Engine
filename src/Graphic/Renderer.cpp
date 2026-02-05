@@ -33,6 +33,16 @@ void Renderer::set_blend(bool enable) {
     }
 }
 
+void Renderer::set_cull_face(bool enable) {
+    if (enable) {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+    }else{
+        glDisable(GL_CULL_FACE);
+    }
+    
+}
+
 void Renderer::set_viewport(int32_t x, int32_t y, int32_t width, int32_t height) {
     glViewport(x, y, width, height);
 }

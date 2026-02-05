@@ -153,6 +153,49 @@ Matrix<T,3,3> quat_to_rotation3(const Quaternion<T>& q) {
     };
 }
 
+template<typename T>
+Quaternion<T> quat_from_rotation3(const Matrix<T,3,3>& m)
+{
+    T trace = m(0,0) + m(1,1) + m(2,2);
+
+    if (trace > T(0)) {
+        T s = sqrt(trace + T(1)) * T(2);
+        return Quaternion<T>{
+            s * T(0.25),
+            (m(2,1) - m(1,2)) / s,
+            (m(0,2) - m(2,0)) / s,
+            (m(1,0) - m(0,1)) / s
+        };
+    }
+    else if (m(0,0) > m(1,1) && m(0,0) > m(2,2)) {
+        T s = sqrt(T(1) + m(0,0) - m(1,1) - m(2,2)) * T(2);
+        return Quaternion<T>{
+            (m(2,1) - m(1,2)) / s,
+            s * T(0.25),
+            (m(0,1) + m(1,0)) / s,
+            (m(0,2) + m(2,0)) / s
+        };
+    }
+    else if (m(1,1) > m(2,2)) {
+        T s = sqrt(T(1) + m(1,1) - m(0,0) - m(2,2)) * T(2);
+        return Quaternion<T>{
+            (m(0,2) - m(2,0)) / s,
+            (m(0,1) + m(1,0)) / s,
+            s * T(0.25),
+            (m(1,2) + m(2,1)) / s
+        };
+    }
+    else {
+        T s = sqrt(T(1) + m(2,2) - m(0,0) - m(1,1)) * T(2);
+        return Quaternion<T>{
+            (m(1,0) - m(0,1)) / s,
+            (m(0,2) + m(2,0)) / s,
+            (m(1,2) + m(2,1)) / s,
+            s * T(0.25)
+        };
+    }
+}
+
 /// @brief From a quaternion to a rotation matrix (4x4)
 /// @tparam T Type of quaternion
 /// @param q The quaternion

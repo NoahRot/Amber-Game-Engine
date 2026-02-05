@@ -22,6 +22,8 @@ public:
 
     void set_blend(bool enable);
 
+    void set_cull_face(bool enable);
+
     void set_viewport(int32_t x, int32_t y, int32_t width, int32_t height);
 
     void draw_arrays(std::shared_ptr<VertexArray> vao, Shader& shader);

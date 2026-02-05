@@ -84,6 +84,38 @@ AssetHandle AssetFactory::create_shader(const std::string& vertex_path, const st
     return m_manager.shaders.add(shader_program);
 }
 
+AssetHandle AssetFactory::create_shader_from_code(const std::string& vertex_code, const std::string& fragment_code) {
+    // Create shaders
+    uint32_t vertex_shader;
+    uint32_t fragment_shader;
+    AssetHandle handle{-1, typeid(Shader)};
+
+    if (!create_shader_partial(GL_VERTEX_SHADER, vertex_shader, vertex_code)) {
+        glDeleteShader(vertex_shader);
+        return handle;
+    }
+
+    if (!create_shader_partial(GL_FRAGMENT_SHADER, fragment_shader, fragment_code)) {
+        glDeleteShader(vertex_shader);
+        glDeleteShader(fragment_shader);
+        return handle;
+    }
+
+    // Create shader program
+    uint32_t shader_program;
+    if (!create_shader_program(vertex_shader, fragment_shader, shader_program)) {
+        glDeleteShader(vertex_shader);
+        glDeleteShader(fragment_shader);
+        return handle;
+    }
+
+    // Delete shaders
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
+
+    return m_manager.shaders.add(shader_program);
+}
+
 AssetHandle AssetFactory::create_texture(const std::string& path) {
     // Read the file from top to bottom
     stbi_set_flip_vertically_on_load(true);

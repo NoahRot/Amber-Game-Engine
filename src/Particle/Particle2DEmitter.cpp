@@ -30,7 +30,7 @@ bool Emitter2D::is_active() const {
 
 void Emitter2D::update(float dt) {
     // Spawn new particles
-    if (m_active) {
+    if (m_active && m_spawn) {
         spawn(dt);
     }
 
@@ -59,7 +59,9 @@ void Emitter2D::update(float dt) {
         };
 
         // Update all data
-        if (m_update) { m_update(context, dt); }
+        if (m_update) { 
+            m_update(context, dt); 
+        }
 
         // Update the vertex and index data
         m_vertex[4*i + 0] = Particle2DVertex{context.position[0],                        context.position[1],                        context.color[0], context.color[1], context.color[2], context.color[3]};
@@ -68,6 +70,22 @@ void Emitter2D::update(float dt) {
         m_vertex[4*i + 3] = Particle2DVertex{context.position[0],                        context.position[1] + context.dimension[1], context.color[0], context.color[1], context.color[2], context.color[3]};
 
         ++i;
+    }
+}
+
+void Emitter2D::spawn_particles(uint32_t nbr_particles) {
+    if (m_spawn) {
+        for (uint32_t i(0) ; i < nbr_particles ; ++i) {
+            capacity_check();
+
+            m_spawn(m_storage.position[m_particle_count],
+                    m_storage.dimension[m_particle_count],
+                    m_storage.color[m_particle_count],
+                    m_storage.velocity[m_particle_count],
+                    m_storage.life_time[m_particle_count]);
+
+            ++m_particle_count;
+        }
     }
 }
 

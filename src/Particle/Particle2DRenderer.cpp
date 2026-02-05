@@ -49,12 +49,23 @@ void Particle2DRenderer::update() {
 }
 
 void Particle2DRenderer::draw(const mat::Mat4f& mvp) {
+    // Draw particles to scene FBO
+    glDisable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     m_vao->bind();
     m_shader.use_shader();
     m_shader.set_mat4f("u_mvp", mvp);
     m_ibo->bind();
 
     glDrawElements(GL_TRIANGLES, m_ibo->count(), GL_UNSIGNED_INT, 0);
+
+    // Restore states if needed
+    glDepthMask(GL_TRUE);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
 
     m_vao->unbind();
 }

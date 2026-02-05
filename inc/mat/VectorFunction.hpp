@@ -167,6 +167,18 @@ Vector<T,N> operator-(Vector<T,N> v1) {
 //   |_| \_,_|_||_\__|\__|_\___/_||_/__/
 //                                      
 
+/// @brief The vector that will be normalized
+/// @tparam T Type of the vector
+/// @tparam N Size of the vector
+/// @param vec The vector
+/// @return A reference to the normalize vector
+template<typename T, uint32_t N>
+mat::Vector<T,N> normalize(mat::Vector<T,N> vec) {
+    T norm = vec.norm();
+    vec /= norm;
+    return vec;
+}
+
 /// @brief Sum all the component of a vector
 /// @tparam T Type of the vector
 /// @tparam N Size of the vector

@@ -11,6 +11,6 @@ void main() {
     if (brightness > u_threshold) {
         frag = vec4(color, 1.0);
     } else {
-        frag = vec4(0.0);
+        frag = vec4(0.0, 0.0, 0.0, 0.0);
     }
 }

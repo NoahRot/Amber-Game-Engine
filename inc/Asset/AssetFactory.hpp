@@ -25,6 +25,8 @@ public:
     AssetHandle create_sound(const std::string& path);
 
     AssetHandle create_shader(const std::string& vertex_path, const std::string& fragment_path);
+    
+    AssetHandle create_shader_from_code(const std::string& vertex_code, const std::string& fragment_code);
 
     AssetHandle create_texture(const std::string& path);
 

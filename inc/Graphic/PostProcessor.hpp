@@ -10,6 +10,10 @@
 #include "Graphic/IndexBuffer.hpp"
 #include "Graphic/Layout.hpp"
 
+#include "Asset/AssetHandle.hpp"
+#include "Asset/AssetManager.hpp"
+#include "Asset/AssetFactory.hpp"
+
 namespace AMB {
 
 struct PostProcessorVertex {
@@ -22,15 +26,23 @@ enum class PostProcessMode {
     multiple
 };
 
+struct PostProcessEffects {
+    Shader* shader;
+    PostProcessMode mode;
+    bool scene_modifier;
+};
+
 class PostProcessor {
 public:
-    PostProcessor(uint32_t width, uint32_t height);
+    PostProcessor(uint32_t width, uint32_t height, AssetManager& asset_manager, AssetFactory& asset_factory);
 
-    void begin(); // bind scene framebuffer
+    void begin();
 
-    void end(Shader& final_shader, PostProcessMode process_mode = PostProcessMode::single);   // apply effects and output to screen
+    void add_effect(Shader* shader, PostProcessMode mode, bool scene_modifier);
 
-    void add_shader_effect(Shader* effect);
+    void clear_effect();
+
+    void end();
 
 private:
     void draw_full_screen_quad();
@@ -38,10 +50,12 @@ private:
     FrameBuffer m_scene_fbo;
     FrameBuffer m_pingpong_fbo[2];
 
-    std::vector<Shader*> m_shader_effects;
+    std::vector<PostProcessEffects> m_effects;
     std::shared_ptr<VertexArray> m_vao;
     std::shared_ptr<VertexBuffer> m_vbo;
     std::shared_ptr<IndexBuffer> m_ibo;
+
+    Shader* m_final_shader;
 
     int m_width, m_height;
 };

@@ -13,7 +13,7 @@ void main() {
     for (int horiz = 0 ; horiz < 2 ; ++ horiz){
         for(int i = 1; i < 5; ++i) {
             vec2 offset = u_texel_size * float(i);
-            if(horiz == 0) {
+            if(horiz%2 == 0) {
                 result += texture(u_texture, v_uv + vec2(offset.x, 0.0)).rgb * weight[i];
                 result += texture(u_texture, v_uv - vec2(offset.x, 0.0)).rgb * weight[i];
             } else {

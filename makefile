@@ -49,7 +49,7 @@ define \n
 
 endef
 
-all: glad $(DIR_LIB)/$(ENGINE_NAME).lib $(DIR_BIN)/$(ENGINE_NAME).dll
+all: $(DIR_LIB)/$(ENGINE_NAME).lib $(DIR_BIN)/$(ENGINE_NAME).dll
 
 show:
 	@echo $(GLAD_SRC)

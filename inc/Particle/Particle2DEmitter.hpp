@@ -6,7 +6,7 @@ namespace AMB {
 
 class Emitter2D {
 public:
-	Emitter2D(int32_t time_between_emission, void (*spawn)(mat::Vec2f&, mat::Vec2f&, mat::Vec4f&, mat::Vec2f&, float&),
+	Emitter2D(int32_t time_between_emission, void (*spawn)(mat::Vec2f&, mat::Vec2f&, mat::Vec4f&, mat::Vec2f&, float&) = nullptr,
 		void (*update)(Particle2DContext&, float) = nullptr,
 		uint32_t preallocate = 32);
 
@@ -17,6 +17,8 @@ public:
 	bool is_active() const;
 
 	void update(float dt);
+
+	void spawn_particles(uint32_t nbr_particles);
 
 	uint32_t get_particle_count() const;
 

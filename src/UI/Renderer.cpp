@@ -2,7 +2,7 @@
 
 namespace AMB::UI {
 
-UI_Renderer::UI_Renderer(Shader& shader, Texture& texture, Font& font, uint32_t reserve)
+UI_Renderer::UI_Renderer(float width, float height, Shader& shader, Texture& texture, Font& font, uint32_t reserve)
 :m_vao(nullptr), m_vbo(nullptr), m_ibo(nullptr), m_shader(shader), m_texture(texture), m_font(font), m_quad_count(0)
 {
     VertexAttribLayout layout;
@@ -27,6 +27,8 @@ UI_Renderer::UI_Renderer(Shader& shader, Texture& texture, Font& font, uint32_t 
     m_vao->add_vertex_buffer(m_vbo, layout);
     m_vao->set_index_buffer(m_ibo);       // now correctly captures IBO
     m_vao->unbind();
+
+    m_projection = mat::graph::orthographic3<float>(0.0f, width, 0.0f, height, -1.0f, 1.0f);
 }
 
 void UI_Renderer::submit_quad(UI_Vertex vertices[4]) {
@@ -67,14 +69,14 @@ void UI_Renderer::reset()  {
     m_quad_count = 0;
 }
 
-void UI_Renderer::draw(const mat::Mat4f& mvp) {
+void UI_Renderer::draw() {
     m_shader.use_shader();
     m_texture.bind(0);
     m_font.get_texture().bind(1);
     m_shader.set_1i("u_texture", 0);  // ← Critical!
     m_shader.set_1i("u_font", 1);     // ← Critical!
     m_vao->bind();
-    m_shader.set_mat4f("u_mvp", mvp);
+    m_shader.set_mat4f("u_mvp", m_projection);
 
     glDrawElements(GL_TRIANGLES, m_quad_count*6, GL_UNSIGNED_INT, 0);
 

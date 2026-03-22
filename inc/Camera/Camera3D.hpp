@@ -23,7 +23,9 @@ public:
 
     void set_position(const mat::Vec3f& pos);
 
-    void move(const mat::Vec3f& displacement);
+    void move_global(const mat::Vec3f& displacement);
+
+    void move_local(const mat::Vec3f& displacement);
 
     mat::Quatf get_orientation() const;
 
@@ -31,7 +33,7 @@ public:
 
     void set_orientation(const mat::Quatf& q);
 
-    void set_orientation(const mat::Vec3f& look_at, const mat::Vec3f& up);
+    void set_orientation(const mat::Vec3f& look_at, mat::Vec3f up);
 
     void rotate(float pitch, float yaw, float roll);
 

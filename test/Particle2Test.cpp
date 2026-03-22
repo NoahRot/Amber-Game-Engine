@@ -153,7 +153,7 @@ int main(int argc, char* argv[]) {
 
     AMB::Shader& shader = asset_manager.shaders.get(shader_handle);
     
-    mat::Mat4f mvp = mat::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
+    mat::Mat4f mvp = mat::graph::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
 
     //AMB::Particle2DSystem particle_system;
     AMB::Emitter2D emitter(10, spawn_3, update_part_3, 10);

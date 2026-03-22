@@ -477,7 +477,7 @@ int main(int argc, char* argv[]) {
 
     AMB::TextRenderer text_renderer(font, shader_text, 2048);
 
-    mat::Mat4f mvp = mat::orthographic3<float>(0.0f, width, 0.0f, height, -1.0f, 1.0f);
+    mat::Mat4f mvp = mat::graph::orthographic3<float>(0.0f, width, 0.0f, height, -1.0f, 1.0f);
 
     renderer.set_clear_color(0.1f, 0.1f, 0.1f, 1.0f);
     renderer.set_blend(true);

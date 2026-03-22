@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
 
     AMB::SpriteAnimation animation = sprite_factory.create_animation(sprite_sheet, 0, 2, 300.0f);
     
-    mat::Mat4f mvp = mat::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
+    mat::Mat4f mvp = mat::graph::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
 
     renderer.set_clear_color(0.1f, 0.1f, 0.1f, 1.0f);
     renderer.set_blend(true);

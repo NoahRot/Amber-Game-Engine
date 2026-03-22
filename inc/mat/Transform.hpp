@@ -11,6 +11,86 @@ namespace mat {
 // 2D Transformations
 
 template<typename T>
+Matrix<T, 2, 2> rotate2(T angle) {
+    T c = cos(angle);
+    T s = sin(angle);
+    T zero(0);
+    T one(1);
+    return  Matrix<T, 2, 2>{
+        c,      s,
+        -s,     c
+    };
+}
+
+template<typename T>
+Matrix<T, 2, 2> rotate2(const Complex<T>& c) {
+    T co = c.real() / c.modulus();
+    T si = c.imag() / c.modulus();
+    T zero(0);
+    T one(1);
+    return Matrix<T, 2, 2>{
+        co,     si,
+        -si,    co
+    };
+}
+
+// 3D Transformations
+
+template<typename T>
+Matrix<T, 3, 3> rotateX(T angle) {
+    T zero(0);
+    T one(1);
+    T c = cos(angle);
+    T s = sin(angle);
+    return Matrix<T, 3, 3>{
+        one,    zero,   zero,
+        zero,   c,      s,
+        zero,   -s,     c
+    };
+}
+
+template<typename T>
+Matrix<T, 3, 3> rotateY(T angle) {
+    T zero(0);
+    T one(1);
+    T c = cos(angle);
+    T s = sin(angle);
+    return Matrix<T, 3, 3>{
+        c,      zero,   -s,
+        zero,   one,     zero,
+        s,      zero,    c
+    };  
+}
+
+template<typename T>
+Matrix<T, 3, 3> rotateZ(T angle) {
+    T zero(0);
+    T one(1);
+    T c = cos(angle);
+    T s = sin(angle);
+    return Matrix<T, 3, 3>{
+        c,      s,      zero,
+        -s,     c,      zero,
+        zero,   zero,   one
+    }; 
+}
+
+template<typename T>
+Matrix<T, 3, 3> rotate3(const Quaternion<T>& q) {
+    T two(2);
+    T one(1);
+    return Matrix<T, 3, 3>{
+        two*(q[0]*q[0] + q[1]*q[1]) - one,  two*(q[1]*q[2] + q[0]*q[3]),        two*(q[1]*q[3] - q[0]*q[2]),
+        two*(q[1]*q[2] - q[0]*q[3]),        two*(q[0]*q[0] + q[2]*q[2]) - one,  two*(q[2]*q[3] + q[0]*q[1]),
+        two*(q[1]*q[3] + q[0]*q[2]),        two*(q[2]*q[3] - q[0]*q[1]),        two*(q[0]*q[0] + q[3]*q[3]) - one
+    };
+}
+
+namespace graph {
+
+// 2D Transformations
+
+template<typename T>
 Matrix<T, 3, 3> translate2(const Vector<T,2>& v) {
     T zero(0);
     T one(1);
@@ -204,4 +284,6 @@ Matrix<T, 4, 4> perspective(T aspectRatio, T fov, T n, T f) {
     };
 }
     
+}
+
 }

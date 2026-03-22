@@ -72,14 +72,14 @@ int main(int argc, char* argv[]) {
     shader_non_pixel.set_1f("u_pixel_size", 4);
 
 
-    mat::Mat4f mvp = mat::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
+    mat::Mat4f mvp = mat::graph::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
 
     AMB::UI::UI_Renderer ui_renderer(shader, texture, font, 128);
 
     AMB::UI::UI_Factory factory;
     AMB::UI::UI_Menu ui_menu = factory
     .create_menu({0.0f, 0.0f}, {float(window.get_width()), float(window.get_height())})
-    .begin_panel(AMB::UI::UI_ElementState::Normal, {50.0f, 50.0f}, AMB::UI::UI_PositionType::relative, {300.0f, 300.0f}, {0.6f, 0.6f, 0.6f, 1.0f}, AMB::UI::UI_Grid(3,3))
+    .begin_panel(AMB::UI::UI_ElementState::Normal, {50.0f, 50.0f}, AMB::UI::UI_PositionType::relative, {300.0f, 300.0f}, {0.6f, 0.6f, 0.6f, 0.0f}, AMB::UI::UI_Grid(3,3))
         .begin_text(AMB::UI::UI_ElementState::Normal, {1.0f, 2.0f}, AMB::UI::UI_PositionType::grid, {0.0f, 0.0f, 0.0f, 1.0f}, "Test of the UI System")
         .end()
         .begin_image(AMB::UI::UI_ElementState::Normal, {1.0f, 1.0f}, AMB::UI::UI_PositionType::grid, {90.0f, 90.0f}, {0.0f, 0.0f}, {1.0f, 1.0f})
@@ -94,11 +94,12 @@ int main(int argc, char* argv[]) {
     ui_menu.submit(ui_renderer);
     ui_renderer.build_mesh();
 
-    renderer.set_depth_test(false);
+    renderer.set_depth_test(true);
     renderer.set_blend(true);
+    renderer.set_cull_face(false);
    
-    AMB::PostProcessor post_processor(window.get_width(), window.get_height());
-    //post_processor.add_shader_effect(&shader_pixel);
+    AMB::PostProcessor post_processor(window.get_width(), window.get_height(), asset_manager, asset_factory);
+    post_processor.add_effect(&shader_pixel, AMB::PostProcessMode::single, true);
     bool pixelized_post_processing = false;
 
     while (!event_manager.is_quitting())
@@ -123,9 +124,9 @@ int main(int argc, char* argv[]) {
         ui_renderer.draw(mvp);
 
         if (pixelized_post_processing) {
-            post_processor.end(shader_pixel);
+            post_processor.end();
         }else{
-            post_processor.end(shader_non_pixel);
+            post_processor.end();
         }
 
         // Present the frame

@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
     AMB::Texture& texture = font.get_texture(); 
     texture.bind(0);
 
-    mat::Mat4f ortho = mat::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
+    mat::Mat4f ortho = mat::graph::orthographic3<float>(0.0f, window.get_width(), 0.0f, window.get_height(), -1.0f, 1.0f);
 
     AMB::TextRenderer text_renderer(font, shader, 30); 
     text_renderer.submit_text("Hello World!\nThis is a text rendering test.\n0123456789", 

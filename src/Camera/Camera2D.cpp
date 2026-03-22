@@ -65,8 +65,8 @@ void CameraOrthographic::set_depth(float near, float far) {
 
 void CameraOrthographic::compute_matrices() {
     if (!m_recompute) { return; }
-    m_projection = mat::orthographic3<float>(-0.5f * m_dimension[0], 0.5f * m_dimension[0], -0.5f * m_dimension[1], 0.5f * m_dimension[1], m_depth[0], m_depth[1]);
-    m_view = mat::dot(mat::rotateZ<float>(-m_orientation), mat::translate3<float>(mat::Vec3f{-m_position[0], -m_position[1], 0.0f}));
+    m_projection = mat::graph::orthographic3<float>(-0.5f * m_dimension[0], 0.5f * m_dimension[0], -0.5f * m_dimension[1], 0.5f * m_dimension[1], m_depth[0], m_depth[1]);
+    m_view = mat::dot(mat::graph::rotateZ<float>(-m_orientation), mat::graph::translate3<float>(mat::Vec3f{-m_position[0], -m_position[1], 0.0f}));
     m_recompute = false;
 }
 
